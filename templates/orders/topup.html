@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Top Up{% endblock %}
+
+{% block content %}
+<h2>Top Up Your Wallet</h2>
+
+{#<form method="post" action="{% url 'orders:create_topup_invoice' %}">#}
+<form method="post" action="{% url 'orders:topup' %}">
+    {% csrf_token %}
+    <label>Enter Amount (USD)</label>
+    <input type="number" step="0.01" name="amount" required>
+
+    <button type="submit" class="btn btn-accent">Continue</button>
+</form>
+{% endblock %}

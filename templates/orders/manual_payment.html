@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="manual-wrapper">
+  <div class="manual-inner">
+
+    <h2 class="page-title">Complete Your Payment</h2>
+    <p class="order-info">
+      Order #{{ order.id }} — Total: <strong>${{ order.total_price }}</strong>
+    </p>
+
+    <!-- ================= CRYPTO CARDS ================= -->
+
+    <!-- Bitcoin -->
+    <div class="manual-card manual-crypto-card">
+      <h5 class="mb-3">Bitcoin (BTC)</h5>
+
+      <div class="qr-center">
+        <div class="qr-box">
+          <img src="data:image/png;base64,{{ btc_qr }}" alt="Bitcoin QR" class="qr-img">
+        </div>
+      </div>
+
+      <div class="address-box">
+        <span id="btcAddress" class="address-text">{{ btc_address }}</span>
+        <button type="button" onclick="copyAddress('btcAddress')" class="btn btn-gold btn-sm">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- Litecoin -->
+    <div class="manual-card manual-crypto-card">
+      <h5 class="mb-3">Litecoin (LTC)</h5>
+
+      <div class="qr-center">
+        <div class="qr-box">
+          <img src="data:image/png;base64,{{ ltc_qr }}" alt="Litecoin QR" class="qr-img">
+        </div>
+      </div>
+
+      <div class="address-box">
+        <span id="ltcAddress" class="address-text">{{ ltc_address }}</span>
+        <button type="button" onclick="copyAddress('ltcAddress')" class="btn btn-gold btn-sm">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- USDT -->
+    <div class="manual-card manual-crypto-card">
+      <h5 class="mb-3">USDT (TRC20)</h5>
+
+      <div class="qr-center">
+        <div class="qr-box">
+          <img src="data:image/png;base64,{{ usdt_qr }}" alt="USDT QR" class="qr-img">
+        </div>
+      </div>
+
+      <div class="address-box">
+        <span id="usdtAddress" class="address-text">{{ usdt_address }}</span>
+        <button type="button" onclick="copyAddress('usdtAddress')" class="btn btn-gold btn-sm">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- Ethereum -->
+    <div class="manual-card manual-crypto-card">
+      <h5 class="mb-3">Ethereum (ERC20)</h5>
+
+      <div class="qr-center">
+        <div class="qr-box">
+          <img src="data:image/png;base64,{{ eth_qr }}" alt="Ethereum QR" class="qr-img">
+        </div>
+      </div>
+
+      <div class="address-box">
+        <span id="ethAddress" class="address-text">{{ eth_address }}</span>
+        <button type="button" onclick="copyAddress('ethAddress')" class="btn btn-gold btn-sm">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= TELEGRAM SUPPORT ================= -->
+
+    <div class="manual-card manual-support-card text-center">
+      <p class="mb-3">Need help? Our support is available 24/7</p>
+      <a href="{{ telegram_link }}" target="_blank" class="btn btn-outline-warning">
+        Contact on Telegram
+      </a>
+    </div>
+
+    <!-- ================= TRANSACTION GUIDELINES ================= -->
+
+    <div class="manual-card manual-guidelines-card">
+      <h5 class="mb-4">Transaction Guidelines</h5>
+
+      <div class="guideline-row btc">
+        <span class="gicon">₿</span>
+        <div class="gtext">Bitcoin: Processing 10–20 minutes. Recommended fee ≥ 50 sat/vB.</div>
+      </div>
+
+      <div class="guideline-row usdt">
+        <span class="gicon">💲</span>
+        <div class="gtext">USDT: Use TRC20 network (recommended). Processing 5–15 minutes.</div>
+      </div>
+
+      <div class="guideline-row ltc">
+        <span class="gicon">◇</span>
+        <div class="gtext">Litecoin: Dynamic gas fee. Processing 5–10 minutes.</div>
+      </div>
+
+      <div class="guideline-row eth">
+        <span class="gicon">Ξ</span>
+        <div class="gtext">Ethereum: Use ERC20 network only. Gas fees vary with congestion. 5–20 minutes.</div>
+      </div>
+
+      <div class="guideline-row warning">
+        <span class="gicon">⚠</span>
+        <div class="gtext">Always verify wallet addresses. Blockchain transactions are irreversible.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function copyAddress(id) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text);
+  alert("Copied ✅");
+}
+</script>
+{% endblock %}

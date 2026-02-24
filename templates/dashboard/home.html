@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row g-4">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-12 col-lg-6">
+
+      <!-- Welcome, Card -->
+      <div class="card dashboard-card mb-3">
+        <div class="card-body d-flex align-items-center gap-3">
+
+          <div class="avatar-circle" style="width:72px;height:72px;font-size:28px;">
+            {% if request.user.first_name %}
+              {{ request.user.first_name|slice:":1"|upper }}
+            {% else %}
+              {{ request.user.username|slice:":1"|upper }}
+            {% endif %}
+          </div>
+
+          <div>
+            <h5 class="mb-0">Welcome,</h5>
+            <p class="mb-0 fw-semibold text-muted">
+              {{ request.user.get_full_name|default:request.user.username }}
+            </p>
+            <p class="mb-0 small text-muted">{{ request.user.email }}</p>
+          </div>
+
+          <div class="ms-auto text-end">
+            <a href="{% url 'orders:my_orders' %}" class="btn btn-gold">My Orders</a>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-gold">Profile</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wallet Card -->
+      <div class="card dashboard-card mb-3">
+        <div class="card-body d-flex align-items-center">
+
+          <div>
+            <h6 class="text-muted mb-1">Wallet Balance</h6>
+            <h3 class="mb-0 text-success">
+              ${{ wallet.balance|default:"0.00" }}
+            </h3>
+          </div>
+
+          <div class="ms-auto">
+            <a href="{% url 'orders:topup' %}" class="btn btn-gold">Top Up Wallet</a>
+          </div>
+        </div>
+        <p class="small text-muted mt-2 mb-2 px-3">Use this balance to pay for purchases or top up with Bitcoin.
+                    For new users you need to deposit at least $100 to activate your account and make purchases.
+        </p>
+        <p class="small text-muted mt-2 mb-2 px-3">Contact support using chat button if you need to top up with other
+            forms of Crypto.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card dashboard-card mb-3">
+        <div class="card-body">
+          <h6 class="mb-2">Quick Links</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'orders:my_orders' %}" class="btn btn-outline-secondary btn-sm">My Orders</a>
+            <a href="{% url 'transactions_list' %}" class="btn btn-outline-secondary btn-sm">Transactions</a>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary btn-sm">Profile</a>
+            <a href="{% url 'products:product_list' %}" class="btn btn-outline-secondary btn-sm">Shop</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-12 col-lg-6">
+
+      <!-- Recent Activity -->
+      <div class="card dashboard-card mb-3">
+        <div class="card-body d-flex align-items-center">
+
+          <div>
+            <h6 class="text-muted mb-1">Recent Activity</h6>
+            <p class="mb-0">Invoices & payments appear here — paid invoices show
+              <span class="badge bg-success">Paid</span>.
+            </p>
+          </div>
+
+          <div class="ms-auto text-end">
+            <a href="{% url 'orders:checkout' %}" class="btn btn-gold">Checkout</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="card dashboard-card">
+        <div class="card-body">
+          <h6 class="mb-3">Recent Transactions</h6>
+
+          {% if recent_txs %}
+            <div class="table-responsive">
+              <table class="table table-borderless align-middle">
+                <thead>
+                  <tr class="text-muted small">
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for tx in recent_txs %}
+                    <tr class="{% if forloop.counter0|divisibleby:2 %}gold-row{% endif %}">
+                      <td class="fw-medium">{{ tx.type|default:"—" }}</td>
+                      <td>${{ tx.amount|default:"0.00" }}</td>
+                      <td>
+                        {% if tx.status == "paid" or tx.status == "settled" %}
+                          <span class="badge bg-success">Paid</span>
+                        {% else %}
+                          <span class="badge bg-secondary">{{ tx.status|default:"pending" }}</span>
+                        {% endif %}
+                      </td>
+                      <td class="text-muted small">
+                        {{ tx.created_at|date:"M j, Y H:i" }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted">No transactions yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+    <!-- Products Row -->
+    <div class="row g-4 mt-4">
+
+        <div class="col-lg-4">
+            <div class="feature-card p-4 rounded-4 shadow-sm">
+                <h4 class="fw-bold">Premium Logs</h4>
+                <p>Explore premium account guides, including verified
+                    U.S. bank accounts and offshore setups, ensuring security
+                    and convenience for your transactions.
+                </p>
+                <a href="/products/" class="btn btn-outline-warning">Shop Now</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="feature-card p-4 rounded-4 shadow-sm">
+                <h4 class="fw-bold">Advanced Proxy Guide</h4>
+                <p>Master the art of anonymous browsing with our revamped proxy
+                    setup tutorial. Discover the latest techniques for secure
+                    configuration and seamless navigation.
+                </p>
+                <a href="/products/" class="btn btn-outline-warning">View</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="feature-card p-4 rounded-4 shadow-sm">
+                <h4 class="fw-bold">Custom Orders</h4>
+                <p>Request custom logs made for you.</p>
+                <a href="{{ telegram_link }}" class="btn btn-outline-warning" target="_blank">
+                    Request
+                </a>
+
+            </div>
+        </div>
+
+</div>
+
+
+{% endblock %}

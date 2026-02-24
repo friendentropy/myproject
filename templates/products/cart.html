@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 fw-bold text-accent">Your Cart</h2>
+
+    {% if cart|length == 0 %}
+        <div class="card p-4 text-center bg-card">
+            <h4 class="text-accent">Your cart is empty.</h4>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="{% url 'products:product_list' %}" class="btn btn-accent w-25">
+                    Browse Products
+                </a>
+            </div>
+        </div>
+    {% else %}
+
+    <div class="card bg-card p-3 shadow">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="text-accent">
+                    <tr>
+                        <th>Product</th>
+                        <th width="140">Price</th>
+                        <th width="160">Quantity</th>
+                        <th width="140">Total</th>
+                        <th width="80"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for item in cart %}
+                    <tr class="cart-row">
+                        <!-- Thumbnail + Name -->
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" class="cart-thumb me-3">
+                                {% else %}
+                                    <img src="{% static 'img/no-image.png' %}" class="cart-thumb me-3">
+                                {% endif %}
+                                <strong class="text-muted">{{ item.product.name }}</strong>
+                            </div>
+                        </td>
+
+                        <td class="text-muted">${{ item.price }}</td>
+
+                        <!-- Quantity update -->
+                        <td>
+                            <form method="POST" action="{% url 'products:cart_add' item.product.id %}" class="d-flex">
+                                {% csrf_token %}
+                                <input type="number" name="quantity"
+                                       value="{{ item.quantity }}"
+                                       class="form-control form-control-sm text-center qty-input" min="1">
+
+                                <button class="btn btn-outline-accent btn-sm ms-2">
+                                    Update
+                                </button>
+                                <input type="hidden" name="override_quantity" value="1">
+                            </form>
+                        </td>
+
+                        <!-- Total -->
+                        <td class="text-muted fw-bold">${{ item.total_price }}</td>
+
+                        <!-- Remove -->
+                        <td>
+                            <form method="POST" action="{% url 'products:cart_remove' item.product.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-4">
+            <h4 class="fw-bold text-accent">Cart Total: ${{ cart.get_total }}</h4>
+            <a href="{% url 'orders:checkout' %}" class="btn btn-accent btn-lg mt-3">Proceed to Checkout</a>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

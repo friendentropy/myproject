@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5 animate-fade-slide">
+    <div class="card bg-dark p-4 shadow-lg" style="width: 480px; border:1px solid var(--accent)">
+        <h3 class="text-center mb-3" style="color:var(--accent)">Create Account</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <div class="text-danger">{{ form.username.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <div class="text-danger">{{ form.password.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.confirm_password.label_tag }}
+                {{ form.confirm_password }}
+                <div class="text-danger">{{ form.confirm_password.errors }}</div>
+            </div>
+
+            <button class="btn btn-outline-accent w-100" type="submit">Sign In</button>
+        </form>
+
+
+        <p class="text-center mt-3">
+            <a href="{% url 'accounts:login' %}" style="color:var(--accent-2)">Already have an account?</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+

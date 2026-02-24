@@ -1,0 +1,8 @@
+requests
+django-qrcode
+Django==4.2
+djangorestframework==3.16.1
+Pillow==10.0.0
+django-cors-headers==4.0.0
+python-dotenv==1.0.0
+psycopg2-binary

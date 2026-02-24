@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="text-gold mb-4 animate-fade-slide">My Orders</h2>
+
+    {% if orders %}
+        <div class="row g-4">
+
+            {% for order in orders %}
+            <div class="col-md-6">
+                <div class="order-card card bg-black text-light p-3 border-gold shadow-lg animate-fade-slide">
+
+                    <div class="d-flex justify-content-between">
+                        <h5 class="text-gold">Order #{{ order.id }}</h5>
+
+                        {% if order.paid %}
+                        <span class="badge bg-success">PAID</span>
+                        {% else %}
+                        <span class="badge bg-danger">PENDING</span>
+                        {% endif %}
+                    </div>
+
+                    <hr class="border-gold">
+
+                    <p>
+                        <strong>Total:</strong>
+                        <span class="text-gold">${{ order.total_amount }}</span>
+                    </p>
+
+                    <p class="text-muted small mb-0">
+                        <strong>Date:</strong> {{ order.created_at }}
+                    </p>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="card bg-black text-light border-gold p-4 animate-fade-slide">
+            <p class="mb-0">You have no orders yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

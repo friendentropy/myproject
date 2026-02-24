@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center mt-5 animate-fade-slide">
+    <div class="card bg-dark p-4 shadow-lg" style="width: 420px; border:1px solid var(--accent)">
+        <h3 class="text-center mb-3" style="color:var(--accent)">Login</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+
+            <button class="btn btn-outline-accent w-100" type="submit">Sign In</button>
+        </form>
+
+        <p class="text-center mt-3">
+            <a href="{% url 'accounts:register' %}" style="color:var(--accent-2)">Create an account</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
