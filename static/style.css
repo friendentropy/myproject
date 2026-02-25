@@ -96,98 +96,77 @@ body{
 }
 
 /* =========================
-   NAVBAR (Always horizontal, mobile-safe)
+   NAVBAR (Bootstrap based)
    ========================= */
 
-.bitgold-navwrap{
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.bitgold-navbar{
+  background:#3e3e3e;
+  border-bottom: 1px solid rgba(212,175,55,0.35);
 }
 
-/* Brand: remove desktop-only margin that breaks mobile */
 .bitgold-brand{
-  margin-left: 0 !important;
-  font-weight: 700;
+  font-weight: 800;
   color: #d4af37 !important;
-  text-shadow:
-    0 0 4px rgba(212, 175, 55, 0.6),
-    0 0 8px rgba(212, 175, 55, 0.4);
-  letter-spacing: 0.5px;
-  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(212,175,55,.35);
+  letter-spacing: .5px;
 }
 
-/* Hover effect */
 .bitgold-brand:hover{
   color: #ffdf70 !important;
-  text-shadow:
-    0 0 6px rgba(255, 223, 112, 0.8),
-    0 0 12px rgba(255, 223, 112, 0.6);
 }
 
-/* Nav row always horizontal */
-.bitgold-nav{
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center;
-  gap: 8px;
-
+.navbar-nav .nav-link{
+  color: rgba(255,255,255,0.9) !important;
+  padding: .5rem .75rem;
   white-space: nowrap;
-
-  /* If the phone is narrow, SCROLL sideways instead of stacking */
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-
-  /* Hide scrollbar for clean look */
-  scrollbar-width: none; /* Firefox */
-}
-.bitgold-nav::-webkit-scrollbar{
-  display: none; /* Chrome/Safari */
 }
 
-/* Keep links compact */
-.nav-link-tight{
-  white-space: nowrap;
-  padding: .35rem .55rem !important;
-  font-size: 0.95rem;
+.navbar-nav .nav-link:hover{
+  color: #d4af37 !important;
 }
 
-/* Theme button — keep your gold style */
 #theme-toggle-btn{
   border: 2px solid #d4af37 !important;
   color: #d4af37 !important;
-  background-color: transparent !important;
-  border-radius: 20px;
+  background: transparent !important;
+  border-radius: 999px;
   padding: 6px 14px;
-  transition: 0.3s ease;
   white-space: nowrap;
 }
+
 #theme-toggle-btn:hover{
-  background-color: #d4af37 !important;
+  background: #d4af37 !important;
   color: #1c1c1c !important;
-  border-color: #1c1c1c !important;
 }
 
-/* Make things slightly tighter on very small screens */
-@media (max-width: 480px){
-  .nav-link-tight{
-    font-size: 0.9rem;
-    padding: .30rem .45rem !important;
-  }
-  #theme-toggle-btn{
-    padding: 5px 10px !important;
-  }
+/* Mini cart dropdown */
+.mini-cart{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 120%;
+  width: 320px;
+  background: #1f1f1f;
+  border: 1px solid rgba(212,175,55,0.35);
+  border-radius: 14px;
+  padding: 14px;
+  z-index: 2000;
 }
 
-/* Hide mini-cart (icon + dropdown) on mobile and small screens */
-@media (max-width: 768px){
-  .bitgold-minicart{
-    display: none !important;
-  }
+.mini-cart-item strong{ color: #fff; }
+.mini-cart-item span{ color: #d4af37; }
+.mini-thumb{
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(212,175,55,0.35);
 }
 
+/* show dropdown when active (you toggle this in JS) */
+.mini-cart.show{
+  display: block;
+}
 
 .product-card {
   background: var(--card);
@@ -809,17 +788,17 @@ body.dark .cart-price {
   position: relative;
 }
 
-.mini-cart {
-    display: none;
-    position: absolute;
-    right: 0;
-    background: var(--card);
-    color: var(--text);
-    width: 300px;
-    padding: 15px;
-    border-radius: 12px;
-    z-index: 9999;
-}
+/*.mini-cart {*/
+/*    display: none;*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    background: var(--card);*/
+/*    color: var(--text);*/
+/*    width: 300px;*/
+/*    padding: 15px;*/
+/*    border-radius: 12px;*/
+/*    z-index: 9999;*/
+/*}*/
 
 .mini-thumb {
     width: 55px;
@@ -828,10 +807,10 @@ body.dark .cart-price {
     border-radius: 8px;
 }
 
-.mini-cart-item {
-    border-bottom: 1px solid var(--muted);
-    padding-bottom: 8px;
-}
+/*.mini-cart-item {*/
+/*    border-bottom: 1px solid var(--muted);*/
+/*    padding-bottom: 8px;*/
+/*}*/
 
 .border-gold {
     border: 1px solid var(--accent);

@@ -19,74 +19,89 @@
   <link rel="apple-touch-icon" sizes="512x512" href="{% static 'img/favicon.png' %}">
 
 
+
 </head>
 
 <body>
-<!-- NAV (Always horizontal – no collapse) -->
-    <nav class="navbar navbar-dark sticky-top bitgold-navbar" style="background:#3e3e3e;">
-      <div class="container-fluid bitgold-navwrap">
+<!-- NAVBAR (Bootstrap: desktop horizontal, mobile collapses) -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top bitgold-navbar">
+      <div class="container-fluid">
 
-        <a class="navbar-brand text-gold bitgold-brand" href="/">Home</a>
+        <a class="navbar-brand bitgold-brand" href="{% url 'products:product_list' %}"></a>
 
-        <ul class="navbar-nav bitgold-nav ms-auto align-items-center">
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-          <li class="nav-item">
-            <a class="nav-link nav-link-tight" href="{% url 'products:product_list' %}">SHOP</a>
-          </li>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
-          <li class="nav-item">
-            <a class="nav-link nav-link-tight" href="{% url 'products:cart_detail' %}">
-              Cart ({{ request.session.cart|length|default:0 }})
-            </a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'products:product_list' %}">SHOP</a>
+            </li>
 
-          <!-- Mini cart icon (hidden on mobile via CSS) -->
-          <li class="nav-item dropdown bitgold-minicart">
-            <a class="nav-link nav-link-tight position-relative" id="miniCartBtn" href="javascript:void(0)">
-              🛒
-              {% if cart|length > 0 %}
-                <span class="badge bg-warning text-dark rounded-pill">{{ cart|length }}</span>
-              {% endif %}
-            </a>
+            <li class="nav-item d-lg-none">
+              <a class="nav-link" href="{% url 'products:cart_detail' %}">
+                Cart ({{ request.session.cart|length|default:0 }})
+              </a>
+            </li>
 
-            <div id="miniCartDropdown" class="mini-cart shadow-lg">
-              {% for item in cart %}
-                <div class="mini-cart-item d-flex mb-3">
-                  {% if item.product.image %}
-                    <img src="{{ item.product.image.url }}" class="mini-thumb">
-                  {% endif %}
+            <!-- Hide these on mobile -->
+            <li class="nav-item d-none d-lg-block">
+              <a class="nav-link" href="{% url 'products:cart_detail' %}">
+                Cart ({{ request.session.cart|length|default:0 }})
+              </a>
+            </li>
 
-                  <div class="ms-2">
-                    <strong>{{ item.product.name }}</strong><br>
-                    Qty: {{ item.quantity }}<br>
-                    <span>{{ item.total_price }} USD</span>
+            <li class="nav-item dropdown d-none d-lg-block">
+              <a class="nav-link position-relative" id="miniCartBtn" href="javascript:void(0)">
+                🛒
+                {% if cart|length > 0 %}
+                  <span class="badge bg-warning text-dark rounded-pill">{{ cart|length }}</span>
+                {% endif %}
+              </a>
+
+              <div id="miniCartDropdown" class="mini-cart shadow-lg">
+                {% for item in cart %}
+                  <div class="mini-cart-item d-flex mb-3">
+                    {% if item.product.image %}
+                      <img src="{{ item.product.image.url }}" class="mini-thumb">
+                    {% endif %}
+                    <div class="ms-2">
+                      <strong>{{ item.product.name }}</strong><br>
+                      Qty: {{ item.quantity }}<br>
+                      <span>{{ item.total_price }} USD</span>
+                    </div>
                   </div>
+                {% endfor %}
+
+                <hr class="my-2">
+                <div class="d-flex justify-content-between">
+                  <strong>Total:</strong>
+                  <strong>{{ cart.get_total_price }} USD</strong>
                 </div>
-              {% endfor %}
 
-              <hr class="my-2">
-              <div class="d-flex justify-content-between">
-                <strong>Total:</strong>
-                <strong>{{ cart.get_total_price }} USD</strong>
+                <div class="d-flex justify-content-center mt-3 gap-3">
+                  <a href="{% url 'products:cart_detail' %}" class="btn btn-outline-warning w-50">View Cart</a>
+                  <a href="{% url 'orders:checkout' %}" class="btn btn-outline-warning w-50">Checkout</a>
+                </div>
               </div>
+            </li>
 
-              <div class="d-flex justify-content-center mt-3 gap-3">
-                <a href="{% url 'products:cart_detail' %}" class="btn btn-outline-warning w-50">View Cart</a>
-                <a href="{% url 'orders:checkout' %}" class="btn btn-outline-warning w-50">Checkout</a>
-              </div>
-            </div>
-          </li>
+            <li class="nav-item d-none d-lg-block">
+              <button id="theme-toggle-btn" class="btn btn-sm btn-outline-light theme-toggle" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-moon" viewBox="0 0 16 16">
+                  <path d="M6 0a6 6 0 1 0 6 6c0-1.657-1.567-3-3-3a6 6 0 0 0-3-3z"/>
+                </svg>
+                <span class="ms-2">Theme</span>
+              </button>
+            </li>
 
-          <li class="nav-item">
-            <button id="theme-toggle-btn" class="btn btn-sm btn-outline-light theme-toggle">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon" viewBox="0 0 16 16">
-                <path d="M6 0a6 6 0 1 0 6 6c0-1.657-1.567-3-3-3a6 6 0 0 0-3-3z"/>
-              </svg>
-              <span class="ms-2">Theme</span>
-            </button>
-          </li>
-
-        </ul>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -128,6 +143,9 @@
         <li><a href="{% url 'orders:topup' %}">Top Up Account</a></li>
 
         <li class="sidebar-section-title">Categories</li>
+        <li> <a class="sidebar-section-title" href="/">Home
+            </a>
+        </li>
 
         {% if categories %}
             {% for category in categories %}
